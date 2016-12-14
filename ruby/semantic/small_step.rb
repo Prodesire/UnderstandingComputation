@@ -5,6 +5,10 @@ class Number < Struct.new(:value)
     "#{value}"
   end
 
+  def inspect
+    "<<#{self}>>"
+  end
+
   def reducible?
     false
   end
@@ -56,6 +60,10 @@ end
 class Boolean < Struct.new(:value)
   def to_s
     value.to_s
+  end
+
+  def inspect
+    "<<#{self}>>"
   end
 
   def reducible?
@@ -134,6 +142,66 @@ class Assign < Struct.new(:name, :expr)
 end
 
 
+class If < Struct.new(:condition, :consequence, :alternative)
+  def to_s
+    "if (#{condition}) { #{consequence} } else { #{alternative} }"
+  end
+
+  def reducible?
+    true
+  end
+
+  def reduce(env)
+    if condition.reducible?
+      [If.new(condition.reduce(env), consequence, alternative), env]
+    else
+      case condition
+        when Boolean.new(true)
+          [consequence, env]
+        when Boolean.new(false)
+          [alternative, env]
+      end
+    end
+  end
+end
+
+
+class Sequence < Struct.new(:first, :second)
+  def to_s
+    "#{first}; #{second}"
+  end
+
+  def reducible?
+    true
+  end
+
+  def reduce(env)
+    case first
+      when DoNothing.new
+        [second, env]
+      else
+        reduced_first, reduced_env = first.reduce(env)
+        [Sequence.new(reduced_first, second), reduced_env]
+    end
+  end
+end
+
+
+class While < Struct.new(:condition, :body)
+  def to_s
+    "while (#{condition}) { #{body} }"
+  end
+
+  def reducible?
+    true
+  end
+
+  def reduce(env)
+    [If.new(condition, Sequence.new(body, self), DoNothing.new), env]
+  end
+end
+
+
 class Machine < Struct.new(:statement, :env)
   def step
     self.statement, self.env = statement.reduce(env)
@@ -150,6 +218,18 @@ class Machine < Struct.new(:statement, :env)
 end
 
 
-statement = Assign.new(:x, Add.new(Varible.new(:x), Number.new(1)))
-env = {x: Number.new(3)}
+## Test "If", "Sequence", "Assign"
+# statement = If.new(Varible.new(:x),
+#                    Sequence.new(Assign.new(:y, Number.new(1)),
+#                                 Assign.new(:z, Number.new(2))),
+#                    DoNothing.new)
+# env = {x: Boolean.new(true)}
+
+## Test "While"
+statement = While.new(
+                     LessThan.new(Varible.new(:x), Number.new(6)),
+                     Assign.new(:x, Multiply.new(Varible.new(:x), Number.new(2)))
+                     )
+env = {x: Number.new(1)}
+
 Machine.new(statement, env).run
