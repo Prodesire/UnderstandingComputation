@@ -1,4 +1,4 @@
-# UderstaningComputation
+# UnderstaningComputation
 
 This repo is the code practicing of the book named [**Understanding Computation**](
 http://computationbook.com/). Understanding Computation is a fun and interesting book 
