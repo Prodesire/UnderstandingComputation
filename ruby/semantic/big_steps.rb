@@ -177,7 +177,6 @@ puts Number.new(23).eval({})
 # Test "Variable"
 puts Variable.new(:x).eval({x: Number.new(3)})
 
-
 # Test "Add", "LessThan"
 puts LessThan.new(Add.new(Variable.new(:x), Number.new(2)),
                   Variable.new(:y)

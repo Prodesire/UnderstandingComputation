@@ -143,7 +143,6 @@ print Number(23).eval({})
 # Test "Variable"
 print Variable('x').eval({'x': Number(3)})
 
-
 # Test "Add", "LessThan"
 print LessThan(Add(Variable('x'), Number(2)),
                Variable('y')
@@ -151,29 +150,16 @@ print LessThan(Add(Variable('x'), Number(2)),
 
 # Test "Sequence"
 print Sequence(Assign('y', Number(1)),
-                  Assign('z', Number(2))).eval({})
+               Assign('z', Number(2))).eval({})
 
 # Test "If"
 print If(Variable('x'),
-            Sequence(Assign('y', Number(1)),
-                         Assign('z', Number(2))),
-            DoNothing
-            ).eval({'x': Boolean(True)})
+         Sequence(Assign('y', Number(1)),
+                  Assign('z', Number(2))),
+         DoNothing
+         ).eval({'x': Boolean(True)})
 
 # Test "While"
 print While(LessThan(Variable('x'), Number(6)),
-               Assign('x', Multiply(Variable('x'), Number(2)))
-               ).eval({'x': Number(1)})
-
-
-## Test "If", "Sequence", "Assign"
-# statement = If(Variable('x'),
-#                Sequence(Assign('y', Number(1)),
-#                         Assign('z', Number(2))),
-#                DoNothing())
-# env = {'x': Boolean(True)}
-
-## Test "While"
-# statement = While(LessThan(Variable('x'), Number(6)),
-#                   Assign('x', Multiply(Variable('x'), Number(2))))
-# env = {'x': Number(1)}
+            Assign('x', Multiply(Variable('x'), Number(2)))
+            ).eval({'x': Number(1)})
