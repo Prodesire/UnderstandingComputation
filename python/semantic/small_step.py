@@ -83,7 +83,7 @@ class LessThan(object):
             return Boolean(self.left.value < self.right.value)
 
 
-class Varible(object):
+class Variable(object):
     def __init__(self, name):
         self.name = name
 
@@ -200,15 +200,15 @@ class Machine(object):
 
 
 ## Test "If", "Sequence", "Assign"
-# statement = If(Varible('x'),
+# statement = If(Variable('x'),
 #                Sequence(Assign('y', Number(1)),
 #                         Assign('z', Number(2))),
 #                DoNothing())
 # env = {'x': Boolean(True)}
 
 ## Test "While"
-statement = While(LessThan(Varible('x'), Number(6)),
-                  Assign('x', Multiply(Varible('x'), Number(2))))
+statement = While(LessThan(Variable('x'), Number(6)),
+                  Assign('x', Multiply(Variable('x'), Number(2))))
 env = {'x': Number(1)}
 
 Machine(statement, env).run()

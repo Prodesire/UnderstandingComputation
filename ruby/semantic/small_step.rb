@@ -93,7 +93,7 @@ class LessThan < Struct.new(:left, :right)
 end
 
 
-class Varible < Struct.new(:name)
+class Variable < Struct.new(:name)
   def to_s
     name.to_s
   end
@@ -219,7 +219,7 @@ end
 
 
 ## Test "If", "Sequence", "Assign"
-# statement = If.new(Varible.new(:x),
+# statement = If.new(Variable.new(:x),
 #                    Sequence.new(Assign.new(:y, Number.new(1)),
 #                                 Assign.new(:z, Number.new(2))),
 #                    DoNothing.new)
@@ -227,8 +227,8 @@ end
 
 ## Test "While"
 statement = While.new(
-                     LessThan.new(Varible.new(:x), Number.new(6)),
-                     Assign.new(:x, Multiply.new(Varible.new(:x), Number.new(2)))
+                     LessThan.new(Variable.new(:x), Number.new(6)),
+                     Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(2)))
                      )
 env = {x: Number.new(1)}
 
