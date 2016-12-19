@@ -218,14 +218,15 @@ class Machine < Struct.new(:statement, :env)
 end
 
 
-## Test "If", "Sequence", "Assign"
-# statement = If.new(Variable.new(:x),
-#                    Sequence.new(Assign.new(:y, Number.new(1)),
-#                                 Assign.new(:z, Number.new(2))),
-#                    DoNothing.new)
-# env = {x: Boolean.new(true)}
+# Test "If", "Sequence", "Assign"
+statement = If.new(Variable.new(:x),
+                   Sequence.new(Assign.new(:y, Number.new(1)),
+                                Assign.new(:z, Number.new(2))),
+                   DoNothing.new)
+env = {x: Boolean.new(true)}
+Machine.new(statement, env).run
 
-## Test "While"
+# Test "While"
 statement = While.new(
                      LessThan.new(Variable.new(:x), Number.new(6)),
                      Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(2)))

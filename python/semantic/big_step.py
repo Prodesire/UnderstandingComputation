@@ -156,7 +156,7 @@ print Sequence(Assign('y', Number(1)),
 print If(Variable('x'),
          Sequence(Assign('y', Number(1)),
                   Assign('z', Number(2))),
-         DoNothing
+         DoNothing()
          ).eval({'x': Boolean(True)})
 
 # Test "While"

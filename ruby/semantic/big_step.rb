@@ -57,10 +57,6 @@ class LessThan < Struct.new(:left, :right)
     "#{left} < #{right}"
   end
 
-  def reducible?
-    true
-  end
-
   def eval(env)
     Boolean.new(left.eval(env).value < right.eval(env).value)
   end
@@ -105,10 +101,6 @@ class If < Struct.new(:condition, :consequence, :alternative)
     "if (#{condition}) { #{consequence} } else { #{alternative} }"
   end
 
-  def reducible?
-    true
-  end
-
   def eval(env)
     case condition.eval(env)
       when Boolean.new(true)
@@ -125,10 +117,6 @@ class Sequence < Struct.new(:first, :second)
     "#{first}; #{second}"
   end
 
-  def reducible?
-    true
-  end
-
   def eval(env)
     second.eval(first.eval(env))
   end
@@ -140,10 +128,6 @@ class While < Struct.new(:condition, :body)
     "while (#{condition}) { #{body} }"
   end
 
-  def reducible?
-    true
-  end
-
   def eval(env)
     case condition.eval(env)
       when Boolean.new(true)
@@ -151,22 +135,6 @@ class While < Struct.new(:condition, :body)
       when Boolean.new(false)
         env
     end
-  end
-end
-
-
-class Machine < Struct.new(:statement, :env)
-  def step
-    self.statement, self.env = statement.reduce(env)
-  end
-
-  def run
-    while statement.reducible?
-      puts "#{statement}, #{env}"
-      step
-    end
-
-    puts "#{statement}, #{env}"
   end
 end
 
