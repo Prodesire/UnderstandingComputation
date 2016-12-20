@@ -134,39 +134,39 @@ class While < Struct.new(:condition, :body)
 end
 
 
-# Test "Number"
-ruby = Number.new(23).to_ruby
-puts ruby, eval(ruby).call({})
-
-# Test "Boolean"
-ruby = Boolean.new(true).to_ruby
-puts ruby, eval(ruby).call({})
-
-# Test "Variable"
-ruby = Variable.new(:x).to_ruby
-puts ruby, eval(ruby).call({x: 7})
-
-# Test "Add", "Multiply", "LessThan"
-ruby = LessThan.new(Add.new(Variable.new(:x), Number.new(2)),
-                    Multiply.new(Variable.new(:y), Number.new(1))).to_ruby
-puts ruby, eval(ruby).call({x: 1, y: 3})
-
-# Test "Assign"
-ruby = Assign.new(:y, Add.new(Variable.new(:x), Number.new(1))).to_ruby
-puts ruby, eval(ruby).call({x: 3})
-
-# Test "If"
-ruby = If.new(Variable.new(:x),
-              Assign.new(:y, Number.new(1)),
-              DoNothing.new).to_ruby
-puts ruby, eval(ruby).call({x: true})
-
-# Test "Sequence"
-ruby = Sequence.new(Assign.new(:y, Number.new(1)),
-                    Assign.new(:z, Number.new(2))).to_ruby
-puts ruby, eval(ruby).call({})
-
-# Test "While"
-ruby = While.new(LessThan.new(Variable.new(:x), Number.new(6)),
-                 Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(2)))).to_ruby
-puts ruby, eval(ruby).call({x: 1})
+# # Test "Number"
+# ruby = Number.new(23).to_ruby
+# puts ruby, eval(ruby).call({})
+#
+# # Test "Boolean"
+# ruby = Boolean.new(true).to_ruby
+# puts ruby, eval(ruby).call({})
+#
+# # Test "Variable"
+# ruby = Variable.new(:x).to_ruby
+# puts ruby, eval(ruby).call({x: 7})
+#
+# # Test "Add", "Multiply", "LessThan"
+# ruby = LessThan.new(Add.new(Variable.new(:x), Number.new(2)),
+#                     Multiply.new(Variable.new(:y), Number.new(1))).to_ruby
+# puts ruby, eval(ruby).call({x: 1, y: 3})
+#
+# # Test "Assign"
+# ruby = Assign.new(:y, Add.new(Variable.new(:x), Number.new(1))).to_ruby
+# puts ruby, eval(ruby).call({x: 3})
+#
+# # Test "If"
+# ruby = If.new(Variable.new(:x),
+#               Assign.new(:y, Number.new(1)),
+#               DoNothing.new).to_ruby
+# puts ruby, eval(ruby).call({x: true})
+#
+# # Test "Sequence"
+# ruby = Sequence.new(Assign.new(:y, Number.new(1)),
+#                     Assign.new(:z, Number.new(2))).to_ruby
+# puts ruby, eval(ruby).call({})
+#
+# # Test "While"
+# ruby = While.new(LessThan.new(Variable.new(:x), Number.new(6)),
+#                  Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(2)))).to_ruby
+# puts ruby, eval(ruby).call({x: 1})

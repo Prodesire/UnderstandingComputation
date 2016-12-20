@@ -139,29 +139,29 @@ class While < Struct.new(:condition, :body)
 end
 
 
-# Test "Number"
-puts Number.new(23).eval({})
-
-# Test "Variable"
-puts Variable.new(:x).eval({x: Number.new(3)})
-
-# Test "Add", "LessThan"
-puts LessThan.new(Add.new(Variable.new(:x), Number.new(2)),
-                  Variable.new(:y)
-                  ).eval({x: Number.new(1), y: Number.new(5)})
-
-# Test "Sequence"
-puts Sequence.new(Assign.new(:y, Number.new(1)),
-                  Assign.new(:z, Number.new(2))).eval({})
-
-# Test "If"
-puts If.new(Variable.new(:x),
-            Sequence.new(Assign.new(:y, Number.new(1)),
-                         Assign.new(:z, Number.new(2))),
-            DoNothing.new
-            ).eval({x: Boolean.new(true)})
-
-# Test "While"
-puts While.new(LessThan.new(Variable.new(:x), Number.new(6)),
-               Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(2)))
-               ).eval({x: Number.new(1)})
+# # Test "Number"
+# puts Number.new(23).eval({})
+#
+# # Test "Variable"
+# puts Variable.new(:x).eval({x: Number.new(3)})
+#
+# # Test "Add", "LessThan"
+# puts LessThan.new(Add.new(Variable.new(:x), Number.new(2)),
+#                   Variable.new(:y)
+#                   ).eval({x: Number.new(1), y: Number.new(5)})
+#
+# # Test "Sequence"
+# puts Sequence.new(Assign.new(:y, Number.new(1)),
+#                   Assign.new(:z, Number.new(2))).eval({})
+#
+# # Test "If"
+# puts If.new(Variable.new(:x),
+#             Sequence.new(Assign.new(:y, Number.new(1)),
+#                          Assign.new(:z, Number.new(2))),
+#             DoNothing.new
+#             ).eval({x: Boolean.new(true)})
+#
+# # Test "While"
+# puts While.new(LessThan.new(Variable.new(:x), Number.new(6)),
+#                Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(2)))
+#                ).eval({x: Number.new(1)})
