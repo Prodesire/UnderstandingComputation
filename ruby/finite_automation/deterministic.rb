@@ -60,13 +60,13 @@ rulebook = DFARulebook.new([
     FARule.new(3, 'a', 3), FARule.new(2, 'b', 3)
 ])
 
-# Test DFA
-dfa = DFA.new(1, [3], rulebook)
-dfa.read_string('baab')
-puts dfa.accepting?
-
-# Test DFADesign
-dfa_design = DFADesign.new(1, [3], rulebook)
-puts dfa_design.accepts?('a')
-puts dfa_design.accepts?('baa')
-puts dfa_design.accepts?('baba')
+# # Test DFA
+# dfa = DFA.new(1, [3], rulebook)
+# dfa.read_string('baab')
+# puts dfa.accepting?
+#
+# # Test DFADesign
+# dfa_design = DFADesign.new(1, [3], rulebook)
+# puts dfa_design.accepts?('a')
+# puts dfa_design.accepts?('baa')
+# puts dfa_design.accepts?('baba')

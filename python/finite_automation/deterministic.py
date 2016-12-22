@@ -67,13 +67,13 @@ rulebook = DFARulebook([
     FARule(3, 'a', 3), FARule(2, 'b', 3)
 ])
 
-# Test DFA
-dfa = DFA(1, [3], rulebook)
-dfa.read_string('baab')
-print dfa.accepting()
-
-# Test DFADesign
-dfa_design = DFADesign(1, [3], rulebook)
-print dfa_design.accepts('a')
-print dfa_design.accepts('baa')
-print dfa_design.accepts('baba')
+# # Test DFA
+# dfa = DFA(1, [3], rulebook)
+# dfa.read_string('baab')
+# print dfa.accepting()
+#
+# # Test DFADesign
+# dfa_design = DFADesign(1, [3], rulebook)
+# print dfa_design.accepts('a')
+# print dfa_design.accepts('baa')
+# print dfa_design.accepts('baba')
