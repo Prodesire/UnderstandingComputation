@@ -6,17 +6,17 @@ class Stack(object):
         self.contents = contents
 
     def push(self, character):
-        return Stack(self.contents + [character])
+        return Stack([character] + self.contents)
 
     def pop(self):
-        self.contents.pop()
+        del self.contents[0]
         return Stack(self.contents)
 
     def top(self):
-        return self.contents[-1] if len(self.contents) > 0 else ''
+        return self.contents[0] if len(self.contents) else ''
 
     def __repr__(self):
-        return '#<Stack> ({0}){1}'.format(self.top(), ''.join(self.contents[-2::-1]))
+        return '#<Stack> ({0}){1}'.format(self.top(), ''.join(self.contents[1::]))
 
 
 class PDAConfiguration(object):
@@ -56,7 +56,7 @@ class PDARule(object):
     def next_stack(self, configuration):
         popped_stack = configuration.stack.pop()
 
-        for character in self.push_characters:
+        for character in reversed(self.push_characters):
             popped_stack = popped_stack.push(character)
         return popped_stack
 
@@ -108,14 +108,13 @@ class DPDA(object):
 
     def read_character(self, character):
         self.current_configuration = self.next_configuration(character)
+        print '-', self.current_configuration
 
     def read_string(self, string):
         print '-------------'
         for character in string:
             if self.is_stuck():
                 break
-            print self.current_configuration_()
-            print character
             self.read_character(character)
 
 
@@ -137,15 +136,50 @@ class DPDADesign(object):
         start_configuration = PDAConfiguration(self.start_state, start_stack)
         return DPDA(start_configuration, self.accept_states, self.rulebook)
 
+# # Test Stack
+# stack = Stack(['a', 'b', 'c', 'd', 'e'])
+# print stack
+# print stack.top()
+# print stack.pop().pop().top()
+# print stack.push('x').push('y').top()
+# print stack.push('x').push('y').pop().top()
 
-# todo result still not right
+# # Test PDARule and PDAConfiguration
+# rule = PDARule(1, '(', 2, '$', ['b', '$'])
+# configuration = PDAConfiguration(1, Stack(['$']))
+# print rule.applies_to(configuration, '(')
+# print rule.follow(configuration)
+
+# # Test DPDARuleBook
 rulebook = DPDARuleBook([
-    PDARule(1, '(', 2, '$', ['$', 'b']),
+    PDARule(1, '(', 2, '$', ['b', '$']),
     PDARule(2, '(', 2, 'b', ['b', 'b']),
     PDARule(2, ')', 2, 'b', []),
     PDARule(2, None, 1, '$', ['$'])
 ])
-dpda_design = DPDADesign(1, '$', [1], rulebook)
-print dpda_design.accepts('(()')
-print dpda_design.accepts('()(()())')
-print dpda_design.accepts('())')
+# configuration = PDAConfiguration(1, Stack(['$']))
+# configuration = rulebook.next_configuration(configuration, '(')
+# print configuration
+# configuration = rulebook.next_configuration(configuration, '(')
+# print configuration
+# configuration = rulebook.next_configuration(configuration, ')')
+# print configuration
+
+# # Test DPDA, need rulebook
+# dpda = DPDA(PDAConfiguration(1, Stack(['$'])), [1], rulebook)
+# dpda.read_string('(()')
+# print dpda.acceptting()
+# dpda.read_string('))()')
+# print dpda.acceptting()
+# print dpda.current_configuration_()
+
+# rulebook = DPDARuleBook([
+#     PDARule(1, '(', 2, '$', ['b', '$']),
+#     PDARule(2, '(', 2, 'b', ['b', 'b']),
+#     PDARule(2, ')', 2, 'b', []),
+#     PDARule(2, None, 1, '$', ['$'])
+# ])
+# dpda_design = DPDADesign(1, '$', [1], rulebook)
+# print dpda_design.accepts('(()')
+# print dpda_design.accepts('()(()())')
+# print dpda_design.accepts('())')
