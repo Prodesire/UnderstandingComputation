@@ -20,7 +20,7 @@ class Stack(object):
 
 
 class PDAConfiguration(object):
-    STUCK_STATE = None
+    STUCK_STATE = object()
 
     def __init__(self, state, stack):
         self.state = state
@@ -85,30 +85,31 @@ class DPDARuleBook(object):
 
 class DPDA(object):
     def __init__(self, current_configuration, accept_states, rulebook):
-        self.current_configuration = current_configuration
+        self._current_configuration = current_configuration
         self.accept_states = accept_states
         self.rulebook = rulebook
 
-    def acceptting(self):
-        return self.current_configuration_().state in self.accept_states
+    def accepting(self):
+        return self.current_configuration().state in self.accept_states
 
-    def current_configuration_(self):
-        return self.rulebook.follow_free_moves(self.current_configuration)
+    def current_configuration(self):
+        return self.rulebook.follow_free_moves(self._current_configuration)
 
     def next_configuration(self, character):
-        if self.rulebook.applies_to(self.current_configuration_(), character):
-            print 1
-            return self.rulebook.next_configuration(self.current_configuration_(), character)
+        if self.rulebook.applies_to(self.current_configuration(), character):
+            print 1, self.current_configuration().stack
+            return self.rulebook.next_configuration(self.current_configuration(), character)
         else:
-            print 2
-            return self.current_configuration_().stuck()
+            print 2, self._current_configuration, self.current_configuration().stack
+            return self.current_configuration().stuck()
 
     def is_stuck(self):
-        return self.current_configuration_().is_stuck()
+        return self.current_configuration().is_stuck()
 
     def read_character(self, character):
-        self.current_configuration = self.next_configuration(character)
-        print '-', self.current_configuration
+        print '++', self._current_configuration
+        self._current_configuration = self.next_configuration(character)
+        print '+', self._current_configuration
 
     def read_string(self, string):
         print '-------------'
@@ -129,7 +130,7 @@ class DPDADesign(object):
     def accepts(self, string):
         dpda = self.to_dpda()
         dpda.read_string(string)
-        return dpda.acceptting()
+        return dpda.accepting()
 
     def to_dpda(self):
         start_stack = Stack([self.bottom_character])
@@ -165,13 +166,13 @@ rulebook = DPDARuleBook([
 # configuration = rulebook.next_configuration(configuration, ')')
 # print configuration
 
-# # Test DPDA, need rulebook
-# dpda = DPDA(PDAConfiguration(1, Stack(['$'])), [1], rulebook)
-# dpda.read_string('(()')
-# print dpda.acceptting()
-# dpda.read_string('))()')
-# print dpda.acceptting()
-# print dpda.current_configuration_()
+# Test DPDA, need rulebook
+dpda = DPDA(PDAConfiguration(1, Stack(['$'])), [1], rulebook)
+dpda.read_string('(()')
+print dpda.accepting()
+dpda.read_string('))()')
+print dpda.accepting()
+print dpda.current_configuration()
 
 # rulebook = DPDARuleBook([
 #     PDARule(1, '(', 2, '$', ['b', '$']),
